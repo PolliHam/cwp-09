@@ -15,3 +15,29 @@ axios.get('http://api.population.io:80/1.0/population/2017/Belarus/')
     console.log(`Error TASK 1.1: ${err}`);
 });
 
+//TASK 1.2
+const countries = ["Canada", "Germany", "France"]
+let allPromises = [];
+let nMale = 0;
+let nFemale = 0;
+for (let i=0; i<3; i++)
+{
+    allPromises.push(axios.get(`http://api.population.io:80/1.0/population/2017/${countries[i]}/`));
+}
+
+//Этот промис выполняется тогда, когда выполнены всего его элементы
+Promise.all(allPromises)
+    .then((res) => {
+        console.log("\tTASK 1.2   Canada, Germany, France\t");
+        res.forEach((element) => {
+            element.data.forEach(group =>{
+                nMale += group["males"];
+                nFemale += group["females"];
+            });
+        });
+        console.log("Суммарное количество мужчин: " + nMale);
+        console.log("Суммарное колличество женщин: " + nFemale);
+    }).catch((err) => {
+    console.log(`Error TASK 1.2: ${err}`);
+});
+
