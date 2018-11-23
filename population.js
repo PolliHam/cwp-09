@@ -41,3 +41,24 @@ Promise.all(allPromises)
     console.log(`Error TASK 1.2: ${err}`);
 });
 
+//TASK 1.3
+let anyPromises = [];
+const year= ["2014", "2015"];
+for (let i=0; i<year.length; i++)
+{
+    anyPromises.push(axios.get(`http://api.population.io:80/1.0/population/${year[i]}/Belarus/`));
+}
+
+//обрабатывает "первый попавшийся"  промис
+Promise.any(anyPromises).then((res) => {
+    console.log("\tTASK 1.3\t  2014, 2015");
+    res.data.forEach((element) => {
+        if(element["age"] === 25){
+            console.log(`Year: ${element["year"]}, males: ${element["males"]}, females: ${element["females"]}`);
+        }
+    });
+}).catch((err) => {
+    console.log(`Error TASK 1.3: ${err}`);
+});
+
+
